@@ -30,17 +30,26 @@ if (!update.message) {
     const otp =
       generateOTP();
 
-    await redis.set(
-  `otp:${otp}`,
-  JSON.stringify({
-    telegramId: chatId,
-    username: update.message.from.username || "",
-    firstName: update.message.from.first_name || ""
-  }),
-  {
-    ex: 300
-  }
+    const userData = {
+telegramId: chatId,
+username: update.message.from.username || "",
+firstName: update.message.from.first_name || ""
+};
+
+console.log("GENERATED OTP:", otp);
+console.log("USER DATA:”, userData);
+
+await redis.set(
+otp:${otp},
+JSON.stringify(userData),
+{
+ex: 300
+}
 );
+
+const testRead = await redis.get(otp:${otp});
+
+console.log("REDIS STORED:", testRead);
 
     await fetch(
       `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
