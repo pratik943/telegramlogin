@@ -71,8 +71,6 @@ Login
 <script>
 async function login() {
 
-  alert("Login button clicked");
-
   const otp = document.getElementById("otp").value.trim();
 
   const response = await fetch("/api/verify", {
@@ -87,23 +85,33 @@ async function login() {
 
   const data = await response.json();
 
-  alert(JSON.stringify(data));
-
   if (data.success) {
 
     document.getElementById("otp").style.display = "none";
     document.querySelector("button").style.display = "none";
 
+    let seconds = 30;
+
     document.getElementById("result").innerHTML = `
       <h2>👋 Welcome ${data.user.firstName}</h2>
       <p>@${data.user.username}</p>
       <p>Successfully logged in.</p>
-      <p>Refreshing in 30 seconds...</p>
+      <p id="timer">Refreshing in 30 seconds...</p>
     `;
 
-    setTimeout(() => {
-      location.reload();
-    }, 30000);
+    const timer = setInterval(() => {
+
+      seconds--;
+
+      document.getElementById("timer").innerText =
+        `Refreshing in ${seconds} seconds...`;
+
+      if (seconds <= 0) {
+        clearInterval(timer);
+        location.reload();
+      }
+
+    }, 1000);
 
   } else {
 
