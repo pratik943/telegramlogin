@@ -13,11 +13,11 @@ function generateOTP() {
 
 module.exports = async (req, res) => {
 
-  const update = req.body;
+  const update = req.body || {};
 
-  if (!update.message) {
-    return res.status(200).send("ok");
-  }
+if (!update.message) {
+  return res.status(200).send("Webhook Ready");
+}
 
   const chatId =
     update.message.chat.id;
