@@ -68,18 +68,18 @@ Login
 </div>
 
 <script>
-async function login(){
+async function login() {
 
 const otp =
-document.getElementById("otp").value;
+document.getElementById(“otp”).value;
 
 const response =
-await fetch("/api/verify",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
+await fetch(”/api/verify”, {
+method: “POST”,
+headers: {
+“Content-Type”: “application/json”
 },
-body:JSON.stringify({
+body: JSON.stringify({
 otp
 })
 });
@@ -87,16 +87,24 @@ otp
 const data =
 await response.json();
 
-if(data.success){
+if (data.success) {
+
+document.getElementById("otp").style.display = "none";
+document.querySelector("button").style.display = "none";
+document.getElementById("result").innerHTML = `
+  <h2>👋 Welcome ${data.user.firstName}</h2>
+  <p>@${data.user.username}</p>
+  <p>Successfully logged in.</p>
+  <p>Refreshing in 30 seconds...</p>
+`;
+setTimeout(() => {
+  location.reload();
+}, 30000);
+
+} else {
 
 document.getElementById("result").innerHTML =
-"✅ Welcome user " +
-data.telegramId;
-
-}else{
-
-document.getElementById("result").innerHTML =
-"❌ Invalid code";
+  "❌ Invalid code";
 
 }
 
