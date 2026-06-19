@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Explore With Pratik</title>
+
+<style>
+body{
+    font-family:Arial;
+    text-align:center;
+    background:#f5f5f5;
+    padding-top:60px;
+}
+
+.card{
+    background:white;
+    max-width:500px;
+    margin:auto;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+<h1>Welcome to my test website</h1>
+
+<div id="loginBox">
+
+<script async
+src="https://telegram.org/js/telegram-widget.js?22"
+data-telegram-login="ewclbase_bot"
+data-size="large"
+data-onauth="onTelegramAuth(user)"
+data-request-access="write">
+</script>
+
+</div>
+
+<div id="userBox" style="display:none">
+
+<img id="photo">
+
+<h2 id="name"></h2>
+
+<p>Welcome to my test website 🎉</p>
+
+<p id="username"></p>
+
+</div>
+
+</div>
+
+<script>
+
+function onTelegramAuth(user){
+
+localStorage.setItem(
+"telegram_user",
+JSON.stringify(user)
+);
+
+showUser(user);
+
+}
+
+function showUser(user){
+
+document.getElementById("loginBox").style.display="none";
+
+document.getElementById("userBox").style.display="block";
+
+document.getElementById("name").innerText=
+"Hello "+user.first_name;
+
+document.getElementById("username").innerText=
+user.username ?
+"@"+user.username : "";
+
+if(user.photo_url){
+
+document.getElementById("photo").src=
+user.photo_url;
+
+}
+
+}
+
+let saved=
+localStorage.getItem("telegram_user");
+
+if(saved){
+
+showUser(JSON.parse(saved));
+
+}
+
+</script>
+
+</body>
+</html>
