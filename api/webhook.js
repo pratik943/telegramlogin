@@ -16,16 +16,16 @@ module.exports = async (req, res) => {
 const update = req.body || {};
 
 if (!update.message) {
-return res.status(200).send(“Webhook Ready”);
+return res.status(200).send("Webhook Ready");
 }
 
 const chatId =
 update.message.chat.id;
 
 const text =
-update.message.text || “”;
+update.message.text || "";
 
-if (text === “/start”) {
+if (text === "/start”) {
 
 const otp =
   generateOTP();
@@ -68,5 +68,5 @@ Valid for 5 minutes.`
 );
 }
 
-res.status(200).send(“ok”);
+res.status(200).send("ok");
 };
