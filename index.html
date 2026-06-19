@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Explore With Pratik</title>
 
 <style>
 body{
-    font-family:Arial;
+    font-family:Arial,sans-serif;
+    max-width:500px;
+    margin:50px auto;
     text-align:center;
-    background:#f5f5f5;
-    padding-top:60px;
+    padding:20px;
 }
 
 .card{
-    background:white;
-    max-width:500px;
-    margin:auto;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
 }
 
-img{
-    width:120px;
-    height:120px;
-    border-radius:50%;
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    box-sizing:border-box;
+}
+
+button{
+    margin-top:10px;
+    padding:12px 20px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:20px;
+    font-weight:bold;
 }
 </style>
-
 </head>
 <body>
 
@@ -35,76 +45,62 @@ img{
 
 <h1>Welcome to my test website</h1>
 
-<div id="loginBox">
+<p>Step 1</p>
 
-<script async
-src="https://telegram.org/js/telegram-widget.js?22"
-data-telegram-login="ewclbase_bot"
-data-size="large"
-data-onauth="onTelegramAuth(user)"
-data-request-access="write">
-</script>
+<a href="https://t.me/YOUR_BOT_USERNAME" target="_blank">
+Open Telegram Bot
+</a>
 
-</div>
+<p style="margin-top:20px;">
+Press Start in the bot and get your login code.
+</p>
 
-<div id="userBox" style="display:none">
+<input
+id="otp"
+placeholder="Enter 6 digit code">
 
-<img id="photo">
+<button onclick="login()">
+Login
+</button>
 
-<h2 id="name"></h2>
-
-<p>Welcome to my test website 🎉</p>
-
-<p id="username"></p>
-
-</div>
+<div id="result"></div>
 
 </div>
 
 <script>
+async function login(){
 
-function onTelegramAuth(user){
+const otp =
+document.getElementById("otp").value;
 
-localStorage.setItem(
-"telegram_user",
-JSON.stringify(user)
-);
+const response =
+await fetch("/api/verify",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+otp
+})
+});
 
-showUser(user);
+const data =
+await response.json();
 
-}
+if(data.success){
 
-function showUser(user){
+document.getElementById("result").innerHTML =
+"✅ Welcome user " +
+data.telegramId;
 
-document.getElementById("loginBox").style.display="none";
+}else{
 
-document.getElementById("userBox").style.display="block";
-
-document.getElementById("name").innerText=
-"Hello "+user.first_name;
-
-document.getElementById("username").innerText=
-user.username ?
-"@"+user.username : "";
-
-if(user.photo_url){
-
-document.getElementById("photo").src=
-user.photo_url;
-
-}
+document.getElementById("result").innerHTML =
+"❌ Invalid code";
 
 }
 
-let saved=
-localStorage.getItem("telegram_user");
-
-if(saved){
-
-showUser(JSON.parse(saved));
-
 }
-
 </script>
 
 </body>
