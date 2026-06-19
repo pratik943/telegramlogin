@@ -31,12 +31,16 @@ if (!update.message) {
       generateOTP();
 
     await redis.set(
-      `otp:${otp}`,
-      chatId,
-      {
-        ex: 300
-      }
-    );
+  `otp:${otp}`,
+  JSON.stringify({
+    telegramId: chatId,
+    username: update.message.from.username || "",
+    firstName: update.message.from.first_name || ""
+  }),
+  {
+    ex: 300
+  }
+);
 
     await fetch(
       `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
