@@ -71,13 +71,13 @@ Login
 async function login() {
 
 const otp =
-document.getElementById(“otp”).value;
+document.getElementById("otp").value;
 
 const response =
-await fetch(”/api/verify”, {
-method: “POST”,
+await fetch("/api/verify", {
+method: "POST",
 headers: {
-“Content-Type”: “application/json”
+"Content-Type”: “application/json"
 },
 body: JSON.stringify({
 otp
