@@ -70,8 +70,9 @@ Login
 <script>
 async function login() {
 
-const otp =
-document.getElementById("otp").value;
+  alert("Login button clicked");
+
+  const otp = document.getElementById("otp").value.trim();
 
 const response =
 await fetch("/api/verify", {
