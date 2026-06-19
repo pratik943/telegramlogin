@@ -15,21 +15,26 @@ module.exports = async (req, res) => {
 
   const { otp } = req.body;
 
-  const telegramId =
-    await redis.get(`otp:${otp}`);
+  const user =
+  await redis.get(`otp:${otp}`);
 
-  if (!telegramId) {
-
-    return res.json({
-      success: false
-    });
-
-  }
-
-  await redis.del(`otp:${otp}`);
+if (!user) {
 
   return res.json({
-    success: true,
-    telegramId
+    success: false
   });
+
+}
+
+await redis.del(`otp:${otp}`);
+
+const userData =
+  typeof user === "string"
+  ? JSON.parse(user)
+  : user;
+
+return res.json({
+  success: true,
+  user: userData
+});
 };
