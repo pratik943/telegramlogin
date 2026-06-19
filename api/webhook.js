@@ -37,7 +37,7 @@ firstName: update.message.from.first_name || ""
 };
 
 console.log("GENERATED OTP:", otp);
-console.log("USER DATA:”, userData);
+console.log("USER DATA:", userData);
 
 await redis.set(
 otp:${otp},
